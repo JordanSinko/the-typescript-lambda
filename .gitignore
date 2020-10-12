@@ -53,6 +53,5 @@ tsconfig.json
 !/src
 !/tsconfig.jest.json
 !/test
-!/.eslintrc.json
 !/API.md
 !/.prettierignore

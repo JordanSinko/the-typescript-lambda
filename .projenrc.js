@@ -33,6 +33,7 @@ const project = new AwsCdkConstructLibrary({
     'npm-run-all': '^4.1.5',
   },
   npmRegistry: 'npm.pkg.github.com',
+  eslint: false,
 });
 
 project.addFields({
@@ -57,6 +58,7 @@ new ReadOnlyFile(project, '.prettierignore', {
   data: `.github
 package.json
 package-lock.json
+API.md
 `,
 });
 
