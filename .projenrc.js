@@ -34,6 +34,7 @@ const project = new AwsCdkConstructLibrary({
   },
   npmRegistry: 'npm.pkg.github.com',
   eslint: false,
+  antitamper: false,
 });
 
 project.addFields({
