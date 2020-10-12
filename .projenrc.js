@@ -21,7 +21,7 @@ const project = new AwsCdkConstructLibrary({
   authorName: 'Jordan Sinko',
   cdkVersion: '1.67.0',
   name: '@JordanSinko/the-typescript-lambda',
-  repository: 'https://github.com/jordan5sinko/the-typescript-lambda.git',
+  repository: 'https://github.com/JordanSinko/the-typescript-lambda.git',
   minNodeVersion: '12',
   cdkDependencies: ['@aws-cdk/core', '@aws-cdk/aws-lambda'],
   cdkTestDependencies: ['@aws-cdk/assert'],
