@@ -16,7 +16,7 @@ class ReadOnlyFile extends FileBase {
 }
 
 const project = new AwsCdkConstructLibrary({
-  packageManager: NodePackageManager.NPM,
+  packageManager: NodePackageManager.YARN,
   authorAddress: 'jordan5sinko@gmail.com',
   authorName: 'Jordan Sinko',
   cdkVersion: '1.67.0',
@@ -55,6 +55,7 @@ new ReadOnlyFile(project, '.prettierignore', {
 package.json
 package-lock.json
 API.md
+.versionrc.json
 `,
 });
 
