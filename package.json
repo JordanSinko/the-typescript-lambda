@@ -43,8 +43,8 @@
     "jsii-release": "^0.1.6",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.1.2",
-    "pretty-quick": "^3.0.2",
-    "projen": "^0.3.107",
+    "pretty-quick": "^3.1.0",
+    "projen": "^0.3.111",
     "standard-version": "^9.0.0",
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.5"
