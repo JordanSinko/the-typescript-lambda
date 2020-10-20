@@ -1,24 +1,52 @@
+import * as path from 'path';
 import { spawnSync, SpawnSyncOptions } from 'child_process';
 import { BundlingOptions, ILocalBundling } from '@aws-cdk/core';
 import { Runtime } from '@aws-cdk/aws-lambda';
 
-export class LocalBundler implements ILocalBundling {
-  //constructor(private readonly props: any) { }
-  constructor() {}
+interface LocalBundlerOptions {
+  rootdir: string;
+  entry: string;
+  runtime: Runtime;
+  sourcemap: boolean;
+  minify: boolean;
+}
 
-  tryBundle(_outputDir: string, _options: BundlingOptions): boolean {
+export class LocalBundler implements ILocalBundling {
+  constructor(private readonly localOptions: LocalBundlerOptions) {}
+
+  tryBundle(outputDir: string, _options: BundlingOptions): boolean {
+    const relativeEntryPath = path.relative(
+      this.localOptions.rootdir,
+      path.resolve(this.localOptions.entry)
+    );
+    const target = (() => {
+      switch (this.localOptions.runtime) {
+        case Runtime.NODEJS_10_X:
+          return 'node10';
+        case Runtime.NODEJS_12_X:
+          return 'node12';
+        default:
+          return 'es2016';
+      }
+    })();
+
     const command = [
       'esbuild`',
-      `index.ts`,
-      `--outdir=/asset-output`,
+      relativeEntryPath,
+      `--outdir=${outputDir}`,
+      `--target=${target}`,
       `--platform=node`,
-      `--target=node10`,
       `--format=cjs`,
       `--bundle`,
-      `--sourcemap`,
-      `--minify`,
-    ].join(' ');
+      this.localOptions.sourcemap && `--sourcemap`,
+      this.localOptions.minify && `--minify`,
+    ]
+      .filter(Boolean)
+      .join(' ');
 
+    console.log(
+      `$(node -p "require.resolve(\'esbuild\', { paths: ['${this.localOptions.entry}'] })")`
+    );
     console.log(command);
 
     exec('bash', ['-c', command], {
