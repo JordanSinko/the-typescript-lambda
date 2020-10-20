@@ -13,6 +13,7 @@ export interface LocalBundlerOptions {
   readonly minify: boolean;
   readonly esbuildVersion?: string;
   readonly externals: string[];
+  readonly dependencies?: { [key: string]: string };
 }
 
 export class LocalBundler implements ILocalBundling {
