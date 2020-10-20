@@ -15,6 +15,7 @@ export interface LocalBundlerOptions {
 
 export class LocalBundler implements ILocalBundling {
   private readonly localOptions: LocalBundlerOptions;
+  private esbuildBinaryPath?: string;
 
   constructor(options: LocalBundlerOptions) {
     this.localOptions = options;
@@ -22,11 +23,17 @@ export class LocalBundler implements ILocalBundling {
 
   hasEsbuild() {
     try {
-      const esbuild = spawnSync(
-        require.resolve('build', { paths: [this.localOptions.entry] }),
-        ['--version']
+      const esbuildPath = require.resolve('esbuild', {
+        paths: [this.localOptions.entry],
+      });
+
+      this.esbuildBinaryPath = path.resolve(
+        esbuildPath,
+        '../../../.bin/esbuild'
       );
-      const version = esbuild.stdout.toString().trim();
+
+      const buff = spawnSync(this.esbuildBinaryPath, ['--version']);
+      const version = buff.stdout.toString().trim();
 
       console.log(version);
       console.log(`^${ESBUILD_VERSION}`);
@@ -59,7 +66,7 @@ export class LocalBundler implements ILocalBundling {
     })();
 
     const command = [
-      `$(node -p "require.resolve(\'esbuild\', { paths: ['${this.localOptions.entry}'] })")`,
+      this.esbuildBinaryPath,
       relativeEntryPath,
       `--outdir=${outputDir}`,
       `--target=${target}`,
