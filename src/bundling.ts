@@ -65,6 +65,7 @@ export class Bundle {
       runtime: options.runtime,
       minify: options.minify ?? false,
       sourcemap: options.sourcemap ?? false,
+      externals: options.externals ?? ['aws-sdk'],
     });
 
     const dockerBundler = new DockerBundler();

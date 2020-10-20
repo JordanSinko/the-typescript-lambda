@@ -12,6 +12,7 @@ export interface LocalBundlerOptions {
   readonly sourcemap: boolean;
   readonly minify: boolean;
   readonly esbuildVersion?: string;
+  readonly externals: string[];
 }
 
 export class LocalBundler implements ILocalBundling {
@@ -65,6 +66,7 @@ export class LocalBundler implements ILocalBundling {
       `--bundle`,
       this.localOptions.sourcemap && `--sourcemap`,
       this.localOptions.minify && `--minify`,
+      ...this.localOptions.externals.map((external) => ` --external:${external}`),
     ]
       .filter(Boolean)
       .join(' ');

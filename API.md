@@ -166,6 +166,7 @@ new LocalBundler(options: LocalBundlerOptions)
 
 * **options** (<code>[LocalBundlerOptions](#jordansinko-the-typescript-lambda-localbundleroptions)</code>)  *No description*
   * **entry** (<code>string</code>)  *No description* 
+  * **externals** (<code>Array<string></code>)  *No description* 
   * **minify** (<code>boolean</code>)  *No description* 
   * **rootdir** (<code>string</code>)  *No description* 
   * **runtime** (<code>[Runtime](#aws-cdk-aws-lambda-runtime)</code>)  *No description* 
@@ -308,6 +309,7 @@ Name | Type | Description
 Name | Type | Description 
 -----|------|-------------
 **entry** | <code>string</code> | <span></span>
+**externals** | <code>Array<string></code> | <span></span>
 **minify** | <code>boolean</code> | <span></span>
 **rootdir** | <code>string</code> | <span></span>
 **runtime** | <code>[Runtime](#aws-cdk-aws-lambda-runtime)</code> | <span></span>
