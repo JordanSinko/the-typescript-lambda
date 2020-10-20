@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { spawnSync, SpawnSyncOptions } from 'child_process';
-import * as shell from 'shelljs';
+// import * as shell from 'shelljs';
 import { BundlingOptions, ILocalBundling } from '@aws-cdk/core';
 import { Runtime } from '@aws-cdk/aws-lambda';
 
@@ -20,7 +20,7 @@ export interface LocalBundlerOptions {
 
 export class LocalBundler implements ILocalBundling {
   private readonly localOptions: LocalBundlerOptions;
-  private esbuildBinaryPath?: string;
+  private esbuildBinaryPath!: string;
 
   constructor(options: LocalBundlerOptions) {
     this.localOptions = options;
@@ -32,12 +32,8 @@ export class LocalBundler implements ILocalBundling {
 
       this.esbuildBinaryPath = path.resolve(esbuildPath, '../../../.bin/esbuild');
 
-      const buff = spawnSync(this.esbuildBinaryPath, ['--version']);
+      const buff = exec(this.esbuildBinaryPath, ['--version']);
       const version = buff.stdout.toString().trim();
-
-      const test = shell.exec(`${this.esbuildBinaryPath} --version`);
-
-      console.log(test);
 
       return new RegExp(`^${this.localOptions.esbuildVersion ?? ESBUILD_VERSION}`).test(version);
     } catch (_err) {
@@ -63,38 +59,34 @@ export class LocalBundler implements ILocalBundling {
       }
     })();
 
-    const esbuildCommand = [
-      this.esbuildBinaryPath,
+    const esbuildArgs: string[] = [
       relativeEntryPath,
       `--outdir=${outputDir}`,
       `--target=${target}`,
       `--platform=node`,
       `--format=cjs`,
       `--bundle`,
-      this.localOptions.sourcemap && `--sourcemap`,
-      this.localOptions.minify && `--minify`,
+      this.localOptions.sourcemap ? `--sourcemap` : '',
+      this.localOptions.minify ? `--minify` : '',
       ...this.localOptions.externals.map((external) => ` --external:${external}`),
-    ]
-      .filter(Boolean)
-      .join(' ');
+    ].filter((a) => a.length > 0);
 
-    console.log(esbuildCommand);
+    console.log(esbuildArgs);
 
-    let depsCommand: string | undefined;
     if (Object.keys(this.localOptions.dependencies ?? {}).length > 0) {
       fs.writeFileSync(
         path.resolve(outputDir, 'package.json'),
         JSON.stringify({ dependencies: this.localOptions.dependencies ?? {} })
       );
 
-      depsCommand = `npm install --cwd ${outputDir}`;
+      exec(`npm`, ['i'], {
+        env: { ...process.env },
+        stdio: ['ignore', process.stderr, 'inherit'],
+        cwd: outputDir,
+      });
     }
 
-    const command = [esbuildCommand, depsCommand].filter(Boolean).join(' && ');
-
-    console.log(command);
-
-    exec('bash', ['-c', command], {
+    exec(this.esbuildBinaryPath, esbuildArgs, {
       env: { ...process.env },
       stdio: ['ignore', process.stderr, 'inherit'],
     });
