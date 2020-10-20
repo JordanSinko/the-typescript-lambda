@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
-import { spawnSync, SpawnSyncOptions } from 'child_process';
-// import * as shell from 'shelljs';
+// import { spawnSync, SpawnSyncOptions } from 'child_process';
+import * as shell from 'shelljs';
 import { BundlingOptions, ILocalBundling } from '@aws-cdk/core';
 import { Runtime } from '@aws-cdk/aws-lambda';
 
@@ -29,10 +29,10 @@ export class LocalBundler implements ILocalBundling {
   hasEsbuild() {
     try {
       const esbuildPath = require.resolve('esbuild', { paths: [this.localOptions.entry] });
-
       this.esbuildBinaryPath = path.resolve(esbuildPath, '../../../.bin/esbuild');
 
-      const buff = exec(this.esbuildBinaryPath, ['--version']);
+      // const buff = exec(this.esbuildBinaryPath, ['--version']);
+      const buff = shell.exec(`${this.esbuildBinaryPath} --version`);
       const version = buff.stdout.toString().trim();
 
       return new RegExp(`^${this.localOptions.esbuildVersion ?? ESBUILD_VERSION}`).test(version);
@@ -59,7 +59,8 @@ export class LocalBundler implements ILocalBundling {
       }
     })();
 
-    const esbuildArgs: string[] = [
+    const esbuildCommand = [
+      this.esbuildBinaryPath,
       relativeEntryPath,
       `--outdir=${outputDir}`,
       `--target=${target}`,
@@ -69,9 +70,11 @@ export class LocalBundler implements ILocalBundling {
       this.localOptions.sourcemap ? `--sourcemap` : '',
       this.localOptions.minify ? `--minify` : '',
       ...this.localOptions.externals.map((external) => ` --external:${external}`),
-    ].filter((a) => a.length > 0);
+    ]
+      .filter((a) => a.length > 0)
+      .join(' ');
 
-    console.log(esbuildArgs);
+    console.log(esbuildCommand);
 
     if (Object.keys(this.localOptions.dependencies ?? {}).length > 0) {
       fs.writeFileSync(
@@ -79,17 +82,16 @@ export class LocalBundler implements ILocalBundling {
         JSON.stringify({ dependencies: this.localOptions.dependencies ?? {} })
       );
 
-      exec(`npm`, ['i'], {
-        env: { ...process.env },
-        stdio: ['ignore', process.stderr, 'inherit'],
-        cwd: outputDir,
-      });
+      // exec(`npm`, ['i'], {
+      //   env: { ...process.env },
+      //   stdio: ['ignore', process.stderr, 'inherit'],
+      //   cwd: outputDir,
+      // });
+
+      shell.exec(`npm i`, { cwd: outputDir });
     }
 
-    exec(this.esbuildBinaryPath, esbuildArgs, {
-      env: { ...process.env },
-      stdio: ['ignore', process.stderr, 'inherit'],
-    });
+    shell.exec(esbuildCommand, { env: { ...process.env } });
 
     return true;
   }
@@ -106,24 +108,24 @@ export class DockerBundler {
   }
 }
 
-function exec(binary: string, args: string[], options?: SpawnSyncOptions) {
-  const buff = spawnSync(binary, args, options);
+// function exec(binary: string, args: string[], options?: SpawnSyncOptions) {
+//   const buff = spawnSync(binary, args, options);
 
-  if (buff.error) {
-    throw buff.error;
-  }
+//   if (buff.error) {
+//     throw buff.error;
+//   }
 
-  if (buff.status !== 0) {
-    if (buff.stdout || buff.stderr) {
-      throw new Error(
-        `[Status ${
-          buff.status
-        }] stdout: ${buff.stdout?.toString().trim()}\n\n\nstderr: ${buff.stderr?.toString().trim()}`
-      );
-    }
+//   if (buff.status !== 0) {
+//     if (buff.stdout || buff.stderr) {
+//       throw new Error(
+//         `[Status ${
+//           buff.status
+//         }] stdout: ${buff.stdout?.toString().trim()}\n\n\nstderr: ${buff.stderr?.toString().trim()}`
+//       );
+//     }
 
-    throw new Error(`${binary} exited with status ${buff.status}`);
-  }
+//     throw new Error(`${binary} exited with status ${buff.status}`);
+//   }
 
-  return buff;
-}
+//   return buff;
+// }
