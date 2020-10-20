@@ -17,6 +17,7 @@ Name|Description
 [EsbuildBaseOptions](#jordansinko-the-typescript-lambda-esbuildbaseoptions)|*No description*
 [EsbuildFunctionProps](#jordansinko-the-typescript-lambda-esbuildfunctionprops)|*No description*
 [EsbuildOptions](#jordansinko-the-typescript-lambda-esbuildoptions)|*No description*
+[LocalBundlerOptions](#jordansinko-the-typescript-lambda-localbundleroptions)|*No description*
 
 
 
@@ -160,15 +161,21 @@ __Implements__: [ILocalBundling](#aws-cdk-core-ilocalbundling)
 
 
 ```ts
-new LocalBundler()
+new LocalBundler(options: LocalBundlerOptions)
 ```
 
+* **options** (<code>[LocalBundlerOptions](#jordansinko-the-typescript-lambda-localbundleroptions)</code>)  *No description*
+  * **entry** (<code>string</code>)  *No description* 
+  * **minify** (<code>boolean</code>)  *No description* 
+  * **rootdir** (<code>string</code>)  *No description* 
+  * **runtime** (<code>[Runtime](#aws-cdk-aws-lambda-runtime)</code>)  *No description* 
+  * **sourcemap** (<code>boolean</code>)  *No description* 
 
 
 ### Methods
 
 
-#### tryBundle(_outputDir, _options) <a id="jordansinko-the-typescript-lambda-localbundler-trybundle"></a>
+#### tryBundle(outputDir, _options) <a id="jordansinko-the-typescript-lambda-localbundler-trybundle"></a>
 
 (experimental) This method is called before attempting docker bundling to allow the bundler to be executed locally.
 
@@ -176,10 +183,10 @@ If the local bundler exists, and bundling
 was performed locally, return `true`. Otherwise, return `false`.
 
 ```ts
-tryBundle(_outputDir: string, _options: BundlingOptions): boolean
+tryBundle(outputDir: string, _options: BundlingOptions): boolean
 ```
 
-* **_outputDir** (<code>string</code>)  *No description*
+* **outputDir** (<code>string</code>)  *No description*
 * **_options** (<code>[BundlingOptions](#aws-cdk-core-bundlingoptions)</code>)  *No description*
   * **image** (<code>[BundlingDockerImage](#aws-cdk-core-bundlingdockerimage)</code>)  The Docker image where the command will run. 
   * **command** (<code>Array<string></code>)  The command to run in the Docker container. __*Default*__: run the command defined in the image
@@ -275,6 +282,23 @@ Name | Type | Description
 **externals**? | <code>Array<string></code> | Excludes modules from the bundle.<br/>__*Default*__: ['aws-sdk']
 **minify**? | <code>boolean</code> | Bundle all dependencies into the output files.<br/>__*Default*__: false
 **sourcemap**? | <code>boolean</code> | Emit a source map.<br/>__*Default*__: false
+
+
+
+## struct LocalBundlerOptions  <a id="jordansinko-the-typescript-lambda-localbundleroptions"></a>
+
+
+
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**entry** | <code>string</code> | <span></span>
+**minify** | <code>boolean</code> | <span></span>
+**rootdir** | <code>string</code> | <span></span>
+**runtime** | <code>[Runtime](#aws-cdk-aws-lambda-runtime)</code> | <span></span>
+**sourcemap** | <code>boolean</code> | <span></span>
 
 
 

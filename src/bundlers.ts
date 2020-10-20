@@ -3,16 +3,20 @@ import { spawnSync, SpawnSyncOptions } from 'child_process';
 import { BundlingOptions, ILocalBundling } from '@aws-cdk/core';
 import { Runtime } from '@aws-cdk/aws-lambda';
 
-interface LocalBundlerOptions {
-  rootdir: string;
-  entry: string;
-  runtime: Runtime;
-  sourcemap: boolean;
-  minify: boolean;
+export interface LocalBundlerOptions {
+  readonly rootdir: string;
+  readonly entry: string;
+  readonly runtime: Runtime;
+  readonly sourcemap: boolean;
+  readonly minify: boolean;
 }
 
 export class LocalBundler implements ILocalBundling {
-  constructor(private readonly localOptions: LocalBundlerOptions) {}
+  private readonly localOptions: LocalBundlerOptions;
+
+  constructor(options: LocalBundlerOptions) {
+    this.localOptions = options;
+  }
 
   tryBundle(outputDir: string, _options: BundlingOptions): boolean {
     const relativeEntryPath = path.relative(
