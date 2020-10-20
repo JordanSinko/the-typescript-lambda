@@ -53,7 +53,6 @@ static esbuild(options: EsbuildOptions): AssetCode
   * **minify** (<code>boolean</code>)  Bundle all dependencies into the output files. __*Default*__: false
   * **sourcemap** (<code>boolean</code>)  Emit a source map. __*Default*__: false
   * **entry** (<code>string</code>)  The file to build. 
-  * **outdir** (<code>string</code>)  The directory to build to. 
   * **rootdir** (<code>string</code>)  The directory which contains necessary files and dependencies. 
   * **runtime** (<code>[Runtime](#aws-cdk-aws-lambda-runtime)</code>)  The runtime that will run the file. 
 
@@ -143,7 +142,6 @@ new EsbuildFunction(scope: Construct, id: string, props: EsbuildFunctionProps)
   * **entry** (<code>string</code>)  The file to build relative to `rootdir`. 
   * **rootdir** (<code>string</code>)  The directory which contains necessary files and dependencies. 
   * **handler** (<code>string</code>)  The exported handler function name. __*Default*__: 'handler'
-  * **outdir** (<code>string</code>)  The directory to build to. __*Default*__: '/asset-output'
   * **runtime** (<code>[Runtime](#aws-cdk-aws-lambda-runtime)</code>)  The runtime that will run the file. __*Default*__: `NODEJS_12_X`
 
 
@@ -263,7 +261,6 @@ Name | Type | Description
 **minify**? | <code>boolean</code> | Bundle all dependencies into the output files.<br/>__*Default*__: false
 **onFailure**? | <code>[IDestination](#aws-cdk-aws-lambda-idestination)</code> | The destination for failed invocations.<br/>__*Default*__: no destination
 **onSuccess**? | <code>[IDestination](#aws-cdk-aws-lambda-idestination)</code> | The destination for successful invocations.<br/>__*Default*__: no destination
-**outdir**? | <code>string</code> | The directory to build to.<br/>__*Default*__: '/asset-output'
 **profiling**? | <code>boolean</code> | Enable profiling.<br/>__*Default*__: No profiling.
 **profilingGroup**? | <code>[IProfilingGroup](#aws-cdk-aws-codeguruprofiler-iprofilinggroup)</code> | Profiling Group.<br/>__*Default*__: A new profiling group will be created if `profiling` is set.
 **reservedConcurrentExecutions**? | <code>number</code> | The maximum of concurrent executions you want to reserve for the function.<br/>__*Default*__: No specific limit - account limit.
@@ -290,7 +287,6 @@ Name | Type | Description
 Name | Type | Description 
 -----|------|-------------
 **entry** | <code>string</code> | The file to build.
-**outdir** | <code>string</code> | The directory to build to.
 **rootdir** | <code>string</code> | The directory which contains necessary files and dependencies.
 **runtime** | <code>[Runtime](#aws-cdk-aws-lambda-runtime)</code> | The runtime that will run the file.
 **externals**? | <code>Array<string></code> | Excludes modules from the bundle.<br/>__*Default*__: ['aws-sdk']

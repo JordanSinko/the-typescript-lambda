@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { Function as AwsFunction, FunctionOptions, Runtime, RuntimeFamily } from '@aws-cdk/aws-lambda';
-import { Construct, AssetHashType } from '@aws-cdk/core';
+import { Construct } from '@aws-cdk/core';
 import { Bundle, EsbuildBaseOptions } from './bundling';
 
 export interface EsbuildFunctionProps extends FunctionOptions, EsbuildBaseOptions {
@@ -27,13 +27,6 @@ export interface EsbuildFunctionProps extends FunctionOptions, EsbuildBaseOption
    * @default 'handler'
    */
   readonly handler?: string;
-
-  /**
-   * The directory to build to
-   *
-   * @default '/asset-output'
-   */
-  readonly outdir?: string;
 }
 
 export class EsbuildFunction extends AwsFunction {
@@ -44,12 +37,11 @@ export class EsbuildFunction extends AwsFunction {
 
     const runtime = props.runtime ?? Runtime.NODEJS_12_X;
     const handler = props.handler ?? 'handler';
-    const outdir = props.outdir ?? AssetHashType.OUTPUT;
 
     const code = Bundle.esbuild({
       rootdir: props.rootdir,
       entry: path.resolve(props.entry),
-      outdir,
+      externals: props.externals,
       runtime,
     });
 

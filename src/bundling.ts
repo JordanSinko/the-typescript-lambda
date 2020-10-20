@@ -46,11 +46,6 @@ export interface EsbuildOptions extends EsbuildBaseOptions {
    * The runtime that will run the file
    */
   readonly runtime: Runtime;
-
-  /**
-   * The directory to build to
-   */
-  readonly outdir: string;
 }
 
 export class Bundle {
