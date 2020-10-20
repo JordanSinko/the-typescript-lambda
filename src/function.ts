@@ -42,6 +42,7 @@ export class EsbuildFunction extends AwsFunction {
       rootdir: props.rootdir,
       entry: path.resolve(props.entry),
       externals: props.externals,
+      includes: props.includes,
       runtime,
     });
 

@@ -49,8 +49,8 @@ static esbuild(options: EsbuildOptions): AssetCode
 ```
 
 * **options** (<code>[EsbuildOptions](#jordansinko-the-typescript-lambda-esbuildoptions)</code>)  *No description*
-  * **bundled** (<code>Array<string></code>)  Includes these modules alongside bundled file. __*Default*__: []
   * **externals** (<code>Array<string></code>)  Excludes modules from the bundle. __*Default*__: ['aws-sdk']
+  * **includes** (<code>Array<string></code>)  Includes these modules alongside bundled file. __*Default*__: []
   * **minify** (<code>boolean</code>)  Bundle all dependencies into the output files. __*Default*__: false
   * **sourcemap** (<code>boolean</code>)  Emit a source map. __*Default*__: false
   * **entry** (<code>string</code>)  The file to build. 
@@ -137,8 +137,8 @@ new EsbuildFunction(scope: Construct, id: string, props: EsbuildFunctionProps)
   * **tracing** (<code>[Tracing](#aws-cdk-aws-lambda-tracing)</code>)  Enable AWS X-Ray Tracing for Lambda Function. __*Default*__: Tracing.Disabled
   * **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  VPC network to place Lambda network interfaces. __*Default*__: Function is not placed within a VPC.
   * **vpcSubnets** (<code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code>)  Where to place the network interfaces within the VPC. __*Default*__: the Vpc default strategy if not specified
-  * **bundled** (<code>Array<string></code>)  Includes these modules alongside bundled file. __*Default*__: []
   * **externals** (<code>Array<string></code>)  Excludes modules from the bundle. __*Default*__: ['aws-sdk']
+  * **includes** (<code>Array<string></code>)  Includes these modules alongside bundled file. __*Default*__: []
   * **minify** (<code>boolean</code>)  Bundle all dependencies into the output files. __*Default*__: false
   * **sourcemap** (<code>boolean</code>)  Emit a source map. __*Default*__: false
   * **entry** (<code>string</code>)  The file to build relative to `rootdir`. 
@@ -225,8 +225,8 @@ __Returns__:
 
 Name | Type | Description 
 -----|------|-------------
-**bundled**? | <code>Array<string></code> | Includes these modules alongside bundled file.<br/>__*Default*__: []
 **externals**? | <code>Array<string></code> | Excludes modules from the bundle.<br/>__*Default*__: ['aws-sdk']
+**includes**? | <code>Array<string></code> | Includes these modules alongside bundled file.<br/>__*Default*__: []
 **minify**? | <code>boolean</code> | Bundle all dependencies into the output files.<br/>__*Default*__: false
 **sourcemap**? | <code>boolean</code> | Emit a source map.<br/>__*Default*__: false
 
@@ -245,7 +245,6 @@ Name | Type | Description
 **rootdir** | <code>string</code> | The directory which contains necessary files and dependencies.
 **allowAllOutbound**? | <code>boolean</code> | Whether to allow the Lambda to send all network traffic.<br/>__*Default*__: true
 **allowPublicSubnet**? | <code>boolean</code> | Lambda Functions in a public subnet can NOT access the internet.<br/>__*Default*__: false
-**bundled**? | <code>Array<string></code> | Includes these modules alongside bundled file.<br/>__*Default*__: []
 **currentVersionOptions**? | <code>[VersionOptions](#aws-cdk-aws-lambda-versionoptions)</code> | Options for the `lambda.Version` resource automatically created by the `fn.currentVersion` method.<br/>__*Default*__: default options as described in `VersionOptions`
 **deadLetterQueue**? | <code>[IQueue](#aws-cdk-aws-sqs-iqueue)</code> | The SQS queue to use if DLQ is enabled.<br/>__*Default*__: SQS queue with 14 day retention period if `deadLetterQueueEnabled` is `true`
 **deadLetterQueueEnabled**? | <code>boolean</code> | Enabled DLQ.<br/>__*Default*__: false unless `deadLetterQueue` is set, which implies DLQ is enabled.
@@ -256,6 +255,7 @@ Name | Type | Description
 **filesystem**? | <code>[FileSystem](#aws-cdk-aws-lambda-filesystem)</code> | The filesystem configuration for the lambda function.<br/>__*Default*__: will not mount any filesystem
 **functionName**? | <code>string</code> | A name for the function.<br/>__*Default*__: AWS CloudFormation generates a unique physical ID and uses that ID for the function's name. For more information, see Name Type.
 **handler**? | <code>string</code> | The exported handler function name.<br/>__*Default*__: 'handler'
+**includes**? | <code>Array<string></code> | Includes these modules alongside bundled file.<br/>__*Default*__: []
 **initialPolicy**? | <code>Array<[PolicyStatement](#aws-cdk-aws-iam-policystatement)></code> | Initial policy statements to add to the created Lambda Role.<br/>__*Default*__: No policy statements are added to the created Lambda role.
 **layers**? | <code>Array<[ILayerVersion](#aws-cdk-aws-lambda-ilayerversion)></code> | A list of layers to add to the function's execution environment.<br/>__*Default*__: No layers.
 **logRetention**? | <code>[RetentionDays](#aws-cdk-aws-logs-retentiondays)</code> | The number of days log events are kept in CloudWatch Logs.<br/>__*Default*__: logs.RetentionDays.INFINITE
@@ -294,8 +294,8 @@ Name | Type | Description
 **entry** | <code>string</code> | The file to build.
 **rootdir** | <code>string</code> | The directory which contains necessary files and dependencies.
 **runtime** | <code>[Runtime](#aws-cdk-aws-lambda-runtime)</code> | The runtime that will run the file.
-**bundled**? | <code>Array<string></code> | Includes these modules alongside bundled file.<br/>__*Default*__: []
 **externals**? | <code>Array<string></code> | Excludes modules from the bundle.<br/>__*Default*__: ['aws-sdk']
+**includes**? | <code>Array<string></code> | Includes these modules alongside bundled file.<br/>__*Default*__: []
 **minify**? | <code>boolean</code> | Bundle all dependencies into the output files.<br/>__*Default*__: false
 **sourcemap**? | <code>boolean</code> | Emit a source map.<br/>__*Default*__: false
 

@@ -36,7 +36,7 @@ export interface EsbuildBaseOptions {
    *
    * @default []
    */
-  readonly bundled?: string[];
+  readonly includes?: string[];
 }
 
 export interface EsbuildOptions extends EsbuildBaseOptions {
@@ -63,11 +63,11 @@ export class Bundle {
     }
 
     const pkgPath = path.resolve(options.rootdir, 'package.json');
-    const bundled = options.bundled ?? [];
+    const includes = options.includes ?? [];
 
     let dependencies: { [key: string]: string } | undefined;
 
-    if (bundled.length > 0) {
+    if (includes.length > 0) {
       if (fs.existsSync(pkgPath) === false) {
         throw new Error('Unable to determine versions because package json could not be found at root');
       }
@@ -82,7 +82,7 @@ export class Bundle {
 
       console.log(pkgJsonDependencies);
 
-      dependencies = bundled.reduce((prev, dep) => {
+      dependencies = includes.reduce((prev, dep) => {
         let next: { [key: string]: string } = prev;
 
         if (pkgJsonDependencies[dep] == null) {

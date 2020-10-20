@@ -57,7 +57,7 @@ export class LocalBundler implements ILocalBundling {
       }
     })();
 
-    const command = [
+    const esbuildCommand = [
       this.esbuildBinaryPath,
       relativeEntryPath,
       `--outdir=${outputDir}`,
@@ -71,6 +71,19 @@ export class LocalBundler implements ILocalBundling {
     ]
       .filter(Boolean)
       .join(' ');
+
+    console.log(esbuildCommand);
+
+    let depsCommand: string | undefined;
+    if (Object.keys(this.localOptions.dependencies ?? {}).length > 0) {
+      depsCommand = [
+        `echo '${JSON.stringify({ dependencies: this.localOptions.dependencies ?? {} })}' > ${outputDir}/package.json`,
+        `cd ${outputDir}`,
+        `npm install`,
+      ].join(' && ');
+    }
+
+    const command = [esbuildCommand, depsCommand].filter(Boolean).join(' && ');
 
     console.log(command);
 
