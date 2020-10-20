@@ -175,6 +175,18 @@ new LocalBundler(options: LocalBundlerOptions)
 ### Methods
 
 
+#### hasEsbuild() <a id="jordansinko-the-typescript-lambda-localbundler-hasesbuild"></a>
+
+
+
+```ts
+hasEsbuild(): boolean
+```
+
+
+__Returns__:
+* <code>boolean</code>
+
 #### tryBundle(outputDir, _options) <a id="jordansinko-the-typescript-lambda-localbundler-trybundle"></a>
 
 (experimental) This method is called before attempting docker bundling to allow the bundler to be executed locally.

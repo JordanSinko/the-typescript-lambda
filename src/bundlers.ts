@@ -3,6 +3,8 @@ import { spawnSync, SpawnSyncOptions } from 'child_process';
 import { BundlingOptions, ILocalBundling } from '@aws-cdk/core';
 import { Runtime } from '@aws-cdk/aws-lambda';
 
+const ESBUILD_VERSION = '0.7.17';
+
 export interface LocalBundlerOptions {
   readonly rootdir: string;
   readonly entry: string;
@@ -18,11 +20,33 @@ export class LocalBundler implements ILocalBundling {
     this.localOptions = options;
   }
 
+  hasEsbuild() {
+    try {
+      const esbuild = spawnSync(
+        require.resolve('build', { paths: [this.localOptions.entry] }),
+        ['--version']
+      );
+      const version = esbuild.stdout.toString().trim();
+
+      console.log(version);
+      console.log(`^${ESBUILD_VERSION}`);
+
+      return new RegExp(`^${ESBUILD_VERSION}`).test(version);
+    } catch (_err) {
+      return false;
+    }
+  }
+
   tryBundle(outputDir: string, _options: BundlingOptions): boolean {
+    if (this.hasEsbuild() === false) {
+      return false;
+    }
+
     const relativeEntryPath = path.relative(
       this.localOptions.rootdir,
       path.resolve(this.localOptions.entry)
     );
+
     const target = (() => {
       switch (this.localOptions.runtime) {
         case Runtime.NODEJS_10_X:
@@ -35,7 +59,7 @@ export class LocalBundler implements ILocalBundling {
     })();
 
     const command = [
-      'esbuild`',
+      `$(node -p "require.resolve(\'esbuild\', { paths: ['${this.localOptions.entry}'] })")`,
       relativeEntryPath,
       `--outdir=${outputDir}`,
       `--target=${target}`,
@@ -48,9 +72,6 @@ export class LocalBundler implements ILocalBundling {
       .filter(Boolean)
       .join(' ');
 
-    console.log(
-      `$(node -p "require.resolve(\'esbuild\', { paths: ['${this.localOptions.entry}'] })")`
-    );
     console.log(command);
 
     exec('bash', ['-c', command], {
