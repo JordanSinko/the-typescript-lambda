@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### 0.0.7 (2020-10-20)
 
+### Bug Fixes
+
+- logging stuff ([9a95d86](https://github.com/JordanSinko/the-typescript-lambda/commit/9a95d867248b056a6ff6d2a09055a98825ae42f9))
+
 ### 0.0.6 (2020-10-20)
 
 ### 0.0.5 (2020-10-19)
