@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import { spawnSync, SpawnSyncOptions } from 'child_process';
+import * as shell from 'shelljs';
 import { BundlingOptions, ILocalBundling } from '@aws-cdk/core';
 import { Runtime } from '@aws-cdk/aws-lambda';
 
@@ -33,6 +34,10 @@ export class LocalBundler implements ILocalBundling {
 
       const buff = spawnSync(this.esbuildBinaryPath, ['--version']);
       const version = buff.stdout.toString().trim();
+
+      const test = shell.exec(`${this.esbuildBinaryPath} --version`);
+
+      console.log(test);
 
       return new RegExp(`^${this.localOptions.esbuildVersion ?? ESBUILD_VERSION}`).test(version);
     } catch (_err) {

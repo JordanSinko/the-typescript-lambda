@@ -33,6 +33,7 @@
     "@aws-cdk/assert": "^1.69.0",
     "@types/jest": "^26.0.7",
     "@types/node": "^12",
+    "@types/shelljs": "^0.8.8",
     "commitlint": "^11.0.0",
     "esbuild": "^0.7.17",
     "husky": "^4.3.0",
@@ -57,9 +58,12 @@
   },
   "dependencies": {
     "@aws-cdk/aws-lambda": "^1.69.0",
-    "@aws-cdk/core": "^1.69.0"
+    "@aws-cdk/core": "^1.69.0",
+    "shelljs": "^0.8.4"
   },
-  "bundledDependencies": [],
+  "bundledDependencies": [
+    "shelljs"
+  ],
   "keywords": [
     "cdk"
   ],
@@ -121,7 +125,7 @@
       "category": 2
     }
   },
-  "version": "0.0.18",
+  "version": "0.0.19",
   "types": "lib/index.d.ts",
   "jest": {
     "clearMocks": true,
