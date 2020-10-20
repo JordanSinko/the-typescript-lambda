@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as fs from 'fs';
 import { spawnSync, SpawnSyncOptions } from 'child_process';
 import { BundlingOptions, ILocalBundling } from '@aws-cdk/core';
 import { Runtime } from '@aws-cdk/aws-lambda';
@@ -76,11 +77,12 @@ export class LocalBundler implements ILocalBundling {
 
     let depsCommand: string | undefined;
     if (Object.keys(this.localOptions.dependencies ?? {}).length > 0) {
-      depsCommand = [
-        `echo '${JSON.stringify({ dependencies: this.localOptions.dependencies ?? {} })}' > ${outputDir}/package.json`,
-        `cd ${outputDir}`,
-        `npm install`,
-      ].join(' && ');
+      fs.writeFileSync(
+        path.resolve(outputDir, 'package.json'),
+        JSON.stringify({ dependencies: this.localOptions.dependencies ?? {} })
+      );
+
+      depsCommand = `npm install --cwd ${outputDir}`;
     }
 
     const command = [esbuildCommand, depsCommand].filter(Boolean).join(' && ');
