@@ -170,6 +170,7 @@ new LocalBundler(options: LocalBundlerOptions)
   * **rootdir** (<code>string</code>)  *No description* 
   * **runtime** (<code>[Runtime](#aws-cdk-aws-lambda-runtime)</code>)  *No description* 
   * **sourcemap** (<code>boolean</code>)  *No description* 
+  * **esbuildVersion** (<code>string</code>)  *No description* __*Optional*__
 
 
 ### Methods
@@ -311,6 +312,7 @@ Name | Type | Description
 **rootdir** | <code>string</code> | <span></span>
 **runtime** | <code>[Runtime](#aws-cdk-aws-lambda-runtime)</code> | <span></span>
 **sourcemap** | <code>boolean</code> | <span></span>
+**esbuildVersion**? | <code>string</code> | __*Optional*__
 
 
 

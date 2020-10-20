@@ -1,8 +1,4 @@
-const {
-  AwsCdkConstructLibrary,
-  FileBase,
-  NodePackageManager,
-} = require('projen');
+const { AwsCdkConstructLibrary, FileBase, NodePackageManager } = require('projen');
 
 class ReadOnlyFile extends FileBase {
   constructor(project, filePath, options) {
@@ -25,14 +21,7 @@ const project = new AwsCdkConstructLibrary({
   minNodeVersion: '12',
   cdkDependencies: ['@aws-cdk/core', '@aws-cdk/aws-lambda'],
   cdkTestDependencies: ['@aws-cdk/assert'],
-  devDeps: [
-    'prettier',
-    'husky',
-    'commitlint',
-    'pretty-quick',
-    'npm-run-all',
-    'esbuild',
-  ],
+  devDeps: ['prettier', 'husky', 'commitlint', 'pretty-quick', 'npm-run-all', 'esbuild'],
   npmRegistry: 'npm.pkg.github.com',
   eslint: false,
   antitamper: false,
@@ -41,7 +30,7 @@ const project = new AwsCdkConstructLibrary({
 
 project.addFields({
   prettier: {
-    printWidth: 80,
+    printWidth: 120,
     tabWidth: 2,
     singleQuote: true,
     semi: true,

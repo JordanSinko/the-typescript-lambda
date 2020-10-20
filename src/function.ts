@@ -1,16 +1,9 @@
 import * as path from 'path';
-import {
-  Function as AwsFunction,
-  FunctionOptions,
-  Runtime,
-  RuntimeFamily,
-} from '@aws-cdk/aws-lambda';
+import { Function as AwsFunction, FunctionOptions, Runtime, RuntimeFamily } from '@aws-cdk/aws-lambda';
 import { Construct, AssetHashType } from '@aws-cdk/core';
 import { Bundle, EsbuildBaseOptions } from './bundling';
 
-export interface EsbuildFunctionProps
-  extends FunctionOptions,
-    EsbuildBaseOptions {
+export interface EsbuildFunctionProps extends FunctionOptions, EsbuildBaseOptions {
   /**
    * The directory which contains necessary files and dependencies
    */

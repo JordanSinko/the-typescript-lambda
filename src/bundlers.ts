@@ -11,6 +11,7 @@ export interface LocalBundlerOptions {
   readonly runtime: Runtime;
   readonly sourcemap: boolean;
   readonly minify: boolean;
+  readonly esbuildVersion?: string;
 }
 
 export class LocalBundler implements ILocalBundling {
@@ -23,22 +24,14 @@ export class LocalBundler implements ILocalBundling {
 
   hasEsbuild() {
     try {
-      const esbuildPath = require.resolve('esbuild', {
-        paths: [this.localOptions.entry],
-      });
+      const esbuildPath = require.resolve('esbuild', { paths: [this.localOptions.entry] });
 
-      this.esbuildBinaryPath = path.resolve(
-        esbuildPath,
-        '../../../.bin/esbuild'
-      );
+      this.esbuildBinaryPath = path.resolve(esbuildPath, '../../../.bin/esbuild');
 
       const buff = spawnSync(this.esbuildBinaryPath, ['--version']);
       const version = buff.stdout.toString().trim();
 
-      console.log(version);
-      console.log(`^${ESBUILD_VERSION}`);
-
-      return new RegExp(`^${ESBUILD_VERSION}`).test(version);
+      return new RegExp(`^${this.localOptions.esbuildVersion ?? ESBUILD_VERSION}`).test(version);
     } catch (_err) {
       return false;
     }
@@ -49,10 +42,7 @@ export class LocalBundler implements ILocalBundling {
       return false;
     }
 
-    const relativeEntryPath = path.relative(
-      this.localOptions.rootdir,
-      path.resolve(this.localOptions.entry)
-    );
+    const relativeEntryPath = path.relative(this.localOptions.rootdir, path.resolve(this.localOptions.entry));
 
     const target = (() => {
       switch (this.localOptions.runtime) {
@@ -113,9 +103,7 @@ function exec(binary: string, args: string[], options?: SpawnSyncOptions) {
       throw new Error(
         `[Status ${
           buff.status
-        }] stdout: ${buff.stdout
-          ?.toString()
-          .trim()}\n\n\nstderr: ${buff.stderr?.toString().trim()}`
+        }] stdout: ${buff.stdout?.toString().trim()}\n\n\nstderr: ${buff.stderr?.toString().trim()}`
       );
     }
 
